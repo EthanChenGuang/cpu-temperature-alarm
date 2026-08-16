@@ -13,11 +13,11 @@
 
 ### Alerting
 
-- [ ] **ALRT-01**: Application triggers continuous local Windows beep while peak temperature exceeds threshold
-- [ ] **ALRT-02**: Local beep stops immediately when temperature drops below threshold
-- [ ] **ALRT-03**: Application sends WhatsApp message via CallMeBot on first threshold breach (default 85°C)
-- [ ] **ALRT-04**: Application re-alerts via WhatsApp immediately when temperature reaches higher tiers (90°C, 95°C)
-- [ ] **ALRT-05**: Application suppresses duplicate WhatsApp messages within a 3-minute cooldown window for same tier
+- [x] **ALRT-01**: Application triggers continuous local Windows beep while peak temperature exceeds threshold
+- [x] **ALRT-02**: Local beep stops immediately when temperature drops below threshold
+- [x] **ALRT-03**: Application sends WhatsApp message via CallMeBot on first threshold breach (default 85°C)
+- [x] **ALRT-04**: Application re-alerts via WhatsApp immediately when temperature reaches higher tiers (90°C, 95°C)
+- [x] **ALRT-05**: Application suppresses duplicate WhatsApp messages within a 3-minute cooldown window for same tier
 
 ### System Tray UI
 
@@ -67,11 +67,11 @@ Deferred to future release.
 | TELE-01 | Phase 1 | Complete |
 | TELE-02 | Phase 1 | Complete |
 | TELE-03 | Phase 1 | Complete |
-| ALRT-01 | Phase 2 | Pending |
-| ALRT-02 | Phase 2 | Pending |
-| ALRT-03 | Phase 2 | Pending |
-| ALRT-04 | Phase 2 | Pending |
-| ALRT-05 | Phase 2 | Pending |
+| ALRT-01 | Phase 2 | Complete |
+| ALRT-02 | Phase 2 | Complete |
+| ALRT-03 | Phase 2 | Complete |
+| ALRT-04 | Phase 2 | Complete |
+| ALRT-05 | Phase 2 | Complete |
 | TRAY-01 | Phase 3 | Pending |
 | TRAY-02 | Phase 3 | Pending |
 | TRAY-03 | Phase 3 | Pending |

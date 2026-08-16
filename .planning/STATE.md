@@ -2,18 +2,18 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 1
-current_phase_name: Telemetry Foundation
+current_phase: 2
+current_phase_name: Alert Engine
 status: planning
-stopped_at: Completed 01-01-PLAN.md
-last_updated: "2026-08-16T19:57:46.359Z"
+stopped_at: Completed 02-01-PLAN.md
+last_updated: "2026-08-16T20:19:04.465Z"
 last_activity: 2026-08-16
 last_activity_desc: Project initialized, planning artifacts created
 progress:
-  total_phases: 1
-  completed_phases: 1
-  total_plans: 1
-  completed_plans: 1
+  total_phases: 2
+  completed_phases: 2
+  total_plans: 2
+  completed_plans: 2
 ---
 
 # Project State
@@ -27,10 +27,10 @@ See: .planning/PROJECT.md (updated 2026-08-16)
 
 ## Current Position
 
-Phase: 1 of 4 (Telemetry Foundation)
-Plan: 0 of 0 in current phase
-Status: Awaiting user approval of architecture & roadmap
-Last activity: 2026-08-16 — Project initialized, planning artifacts created
+Phase: 2 of 4 (Alert Engine)
+Plan: Not started
+Status: Ready to plan
+Last activity: 2026-08-16 — Phase 1 complete, transitioned to Phase 2
 
 Progress: [██████████] 100%
 
@@ -38,7 +38,7 @@ Progress: [██████████] 100%
 
 **Velocity:**
 
-- Total plans completed: 0
+- Total plans completed: 1
 - Average duration: —
 - Total execution time: 0 hours
 
@@ -46,12 +46,13 @@ Progress: [██████████] 100%
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 1 | 1 | - | - |
 **Per-Plan Metrics:**
 
 | Plan | Duration | Tasks | Files |
 |------|----------|-------|-------|
 | Phase 01 P01 | 12 | 3 tasks | 11 files |
+| Phase 02 P01 | 2min | 3 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -61,6 +62,8 @@ Progress: [██████████] 100%
 - 4-phase coarse roadmap aligned with user specification
 - [Phase ?]: Lazy clr import in LhmBridge.open() for WSL testability
 - [Phase ?]: Peak None when all readings invalid — alert engine must not fire on unknown
+- [Phase ?]: COOLDOWN state only when WhatsApp suppressed, not on send cycle
+- [Phase ?]: Tier escalation via separate keys in last_sent_monotonic map
 
 ### Pending Todos
 
@@ -79,6 +82,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-08-16T19:57:46.352Z
-Stopped at: Completed 01-01-PLAN.md
+Last session: 2026-08-16T20:19:04.458Z
+Stopped at: Completed 02-01-PLAN.md
 Resume file: None
