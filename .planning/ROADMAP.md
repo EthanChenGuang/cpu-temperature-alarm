@@ -92,6 +92,10 @@ cpu-high-temperature-alert/
 **Goal:** Establish the hardware telemetry layer — dependencies, LibreHardwareMonitor DLL integration, and a working 3-second temperature poll that returns peak CPU/GPU temperature.
 **Mode:** mvp
 **Requirements:** TELE-01, TELE-02, TELE-03
+**Plans:** 1 plan
+
+Plans:
+- [ ] 01-01-PLAN.md — End-to-end LHM telemetry slice: fetch script, pythonnet bridge, 3s poll CLI, WSL tests
 
 **Deliverables:**
 - `requirements.txt` with pinned dependencies
