@@ -93,7 +93,7 @@ cpu-high-temperature-alert/
 **Goal:** Establish the hardware telemetry layer — dependencies, LibreHardwareMonitor DLL integration, and a working 3-second temperature poll that returns peak CPU/GPU temperature.
 **Mode:** mvp
 **Requirements:** TELE-01, TELE-02, TELE-03
-**Plans:** 1/1 plans executed
+**Plans:** 1/1 plans complete
 
 Plans:
 
@@ -120,6 +120,11 @@ Plans:
 **Goal:** Implement threshold-based alerting with local sound, WhatsApp notifications via CallMeBot, tier escalation, and 3-minute cooldown.
 **Mode:** mvp
 **Requirements:** ALRT-01, ALRT-02, ALRT-03, ALRT-04, ALRT-05
+**Plans:** 1 plan
+
+Plans:
+
+- [ ] 02-01-PLAN.md — End-to-end alert slice: config loader, state machine, winsound beep, CallMeBot WhatsApp, WSL tests, harness
 
 **Deliverables:**
 
