@@ -6,11 +6,11 @@ import json
 import logging
 from pathlib import Path
 
-from src.config.schema import AppConfig, config_from_dict
+from src.config.schema import AppConfig, config_from_dict, config_to_dict, validate_config
 
 logger = logging.getLogger(__name__)
 
-__all__ = ["load_config"]
+__all__ = ["default_config_path", "load_config", "save_config"]
 
 
 def _repo_root() -> Path:
@@ -48,3 +48,14 @@ def load_config(path: Path | str | None = None) -> AppConfig:
     except ValueError as exc:
         logger.warning("Invalid config in %s (%s) — using defaults", config_path, exc)
         return config_from_dict(None)
+
+
+def save_config(config: AppConfig, path: Path | str | None = None) -> Path:
+    """Write AppConfig to JSON file after validation."""
+    config_path = Path(path) if path is not None else default_config_path()
+    data = config_to_dict(config)
+    validate_config(data)
+    config_path.parent.mkdir(parents=True, exist_ok=True)
+    config_path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+    logger.info("Saved config to %s", config_path)
+    return config_path

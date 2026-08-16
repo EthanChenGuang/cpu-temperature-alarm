@@ -70,6 +70,21 @@ def config_from_dict(data: dict[str, Any] | None) -> AppConfig:
     )
 
 
+def config_to_dict(config: AppConfig) -> dict[str, Any]:
+    """Serialize AppConfig to a JSON-compatible dict."""
+    return {
+        "whatsapp_phone": config.whatsapp_phone,
+        "callmebot_api_key": config.callmebot_api_key,
+        "threshold_celsius": config.threshold_celsius,
+        "critical_tiers_celsius": list(config.critical_tiers_celsius),
+        "cooldown_seconds": config.cooldown_seconds,
+        "poll_interval_seconds": config.poll_interval_seconds,
+        "beep_frequency_hz": config.beep_frequency_hz,
+        "beep_duration_ms": config.beep_duration_ms,
+        "alert_message_template": config.alert_message_template,
+    }
+
+
 def validate_config(data: dict[str, Any]) -> None:
     """Validate config ranges per D-16."""
     threshold = int(data["threshold_celsius"])
