@@ -44,6 +44,10 @@ class CallMeBotClient:
         self._phone = phone.strip() if phone else ""
         self._api_key = api_key.strip() if api_key else ""
 
+    def update_credentials(self, phone: str, api_key: str) -> None:
+        self._phone = phone.strip() if phone else ""
+        self._api_key = api_key.strip() if api_key else ""
+
     def is_configured(self) -> bool:
         if not self._phone or not self._api_key:
             return False
