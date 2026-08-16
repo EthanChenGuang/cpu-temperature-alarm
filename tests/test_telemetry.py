@@ -132,3 +132,59 @@ def test_telemetry_poller_empty_sensors_yields_none_peak():
     poller = TelemetryPoller(backend)
     _, peak = poller.run_once()
     assert peak is None
+
+
+def test_main_exits_one_on_missing_dll(capsys, mocker):
+    mocker.patch(
+        "src.telemetry.sensor_reader.LhmBridge.open",
+        side_effect=LhmDllNotFoundError(
+            "LibreHardwareMonitorLib.dll not found. Run: pwsh scripts/fetch-lhm.ps1"
+        ),
+    )
+    with pytest.raises(SystemExit) as exc_info:
+        from src.telemetry.sensor_reader import main
+
+        main()
+    assert exc_info.value.code == 1
+    captured = capsys.readouterr()
+    assert "fetch-lhm.ps1" in captured.out
+    assert "Traceback" not in captured.err
+
+
+def test_run_forever_prints_hardware_prefixed_names(capsys, mocker):
+    backend = FakeLhmBackend(
+        [
+            SensorReading(name="CPU / Package", value_celsius=50.0),
+            SensorReading(name="GPU / Hot Spot", value_celsius=60.0),
+        ]
+    )
+    poller = TelemetryPoller(backend, poll_interval_seconds=0)
+
+    def stop_after_one(*_args, **_kwargs):
+        raise KeyboardInterrupt
+
+    mocker.patch("src.telemetry.sensor_reader.time.sleep", side_effect=stop_after_one)
+    poller.run_forever()
+    captured = capsys.readouterr()
+    assert "CPU / Package: 50.0°C" in captured.out
+    assert "GPU / Hot Spot: 60.0°C" in captured.out
+    assert "Peak: 60.0°C" in captured.out
+
+
+def test_run_forever_empty_sensors_logs_message(capsys, mocker):
+    backend = FakeLhmBackend([])
+    poller = TelemetryPoller(backend, poll_interval_seconds=0)
+
+    call_count = 0
+
+    def stop_after_two(*_args, **_kwargs):
+        nonlocal call_count
+        call_count += 1
+        if call_count >= 2:
+            raise KeyboardInterrupt
+
+    mocker.patch("src.telemetry.sensor_reader.time.sleep", side_effect=stop_after_two)
+    poller.run_forever()
+    captured = capsys.readouterr()
+    assert "No temperature sensors detected" in captured.out
+    assert captured.out.count("No temperature sensors detected") == 1
