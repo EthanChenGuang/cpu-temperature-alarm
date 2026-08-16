@@ -35,9 +35,9 @@
 
 ### Packaging & Deployment
 
-- [ ] **DEPL-01**: Application packages into standalone Windows `.exe` via PyInstaller
-- [ ] **DEPL-02**: Setup script creates Task Scheduler entry for silent autorun on boot with admin privileges
-- [ ] **DEPL-03**: Application runs as background system tray process with no console window
+- [x] **DEPL-01**: Application packages into standalone Windows `.exe` via PyInstaller
+- [x] **DEPL-02**: Setup script creates Task Scheduler entry for silent autorun on boot with admin privileges
+- [x] **DEPL-03**: Application runs as background system tray process with no console window
 
 ## v2 Requirements
 
@@ -80,9 +80,9 @@ Deferred to future release.
 | CONF-02 | Phase 3 | Complete |
 | CONF-03 | Phase 3 | Complete |
 | CONF-04 | Phase 3 | Complete |
-| DEPL-01 | Phase 4 | Pending |
-| DEPL-02 | Phase 4 | Pending |
-| DEPL-03 | Phase 4 | Pending |
+| DEPL-01 | Phase 4 | Complete |
+| DEPL-02 | Phase 4 | Complete |
+| DEPL-03 | Phase 4 | Complete |
 
 **Coverage:**
 

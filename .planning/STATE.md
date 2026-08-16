@@ -2,18 +2,18 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 03
-current_phase_name: Tray UI & Settings
-status: planning
-stopped_at: Completed 03-01-PLAN.md
-last_updated: "2026-08-16T20:23:25.564Z"
+current_phase: 04
+current_phase_name: Integration & Deployment
+status: complete
+stopped_at: Completed 04-01-PLAN.md
+last_updated: "2026-08-16T20:26:13.897Z"
 last_activity: 2026-08-16
 last_activity_desc: Project initialized, planning artifacts created
 progress:
   total_phases: 4
-  completed_phases: 3
-  total_plans: 3
-  completed_plans: 3
+  completed_phases: 4
+  total_plans: 4
+  completed_plans: 4
 ---
 
 # Project State
@@ -23,14 +23,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-16)
 
 **Core value:** The user is reliably warned — audibly and via WhatsApp — before hardware damage occurs from sustained high CPU/GPU temperatures.
-**Current focus:** Phase 1 — Telemetry Foundation (awaiting approval)
+**Current focus:** Phase 4 complete — all v1 requirements satisfied
 
 ## Current Position
 
-Phase: 03 of 4 (Tray UI & Settings)
-Plan: Not started
-Status: Ready to plan
-Last activity: 2026-08-16 — Phase 2 complete, transitioned to Phase 03
+Phase: 04 of 4 (Integration & Deployment)
+Plan: 1 of 1 complete
+Status: Complete
+Last activity: 2026-08-16 — Phase 4 complete, all v1 requirements satisfied
 
 Progress: [██████████] 100%
 
@@ -38,7 +38,7 @@ Progress: [██████████] 100%
 
 **Velocity:**
 
-- Total plans completed: 2
+- Total plans completed: 4
 - Average duration: —
 - Total execution time: 0 hours
 
@@ -55,6 +55,7 @@ Progress: [██████████] 100%
 | Phase 01 P01 | 12 | 3 tasks | 11 files |
 | Phase 02 P01 | 2min | 3 tasks | 9 files |
 | Phase 03 P01 | 15min | 3 tasks | 11 files |
+| Phase 04-integration-deployment P01 | 20min | 3 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -68,6 +69,8 @@ Progress: [██████████] 100%
 - [Phase ?]: Tier escalation via separate keys in last_sent_monotonic map
 - [Phase ?]: Red tint on tray icon when alerting; MockTrayController for WSL tests
 - [Phase ?]: API key masked in settings; empty save preserves existing key
+- [Phase ?]: One-folder COLLECT PyInstaller build for reliable LHM/pythonnet DLL loading
+- [Phase ?]: src/paths.py app_root resolves beside frozen exe for vendor and config
 
 ### Pending Todos
 
@@ -86,6 +89,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-08-16T20:23:25.553Z
-Stopped at: Completed 03-01-PLAN.md
+Last session: 2026-08-16T20:26:13.886Z
+Stopped at: Completed 04-01-PLAN.md
 Resume file: None

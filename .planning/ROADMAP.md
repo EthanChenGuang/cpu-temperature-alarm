@@ -169,6 +169,11 @@ Plans:
 **Goal:** Wire all modules into a production entry point, document testing, package as Windows `.exe`, and provide Task Scheduler autorun setup.
 **Mode:** mvp
 **Requirements:** DEPL-01, DEPL-02, DEPL-03
+**Plans:** 1/1 plans complete
+
+Plans:
+
+- [x] 04-01-PLAN.md — Production entry, PyInstaller spec, build/autostart scripts, README runbook
 
 **Deliverables:**
 
