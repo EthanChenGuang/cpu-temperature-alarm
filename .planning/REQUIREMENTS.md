@@ -21,17 +21,17 @@
 
 ### System Tray UI
 
-- [ ] **TRAY-01**: Application displays peak temperature as an integer rendered on the system tray icon
-- [ ] **TRAY-02**: Tray icon updates in real time on each poll cycle
-- [ ] **TRAY-03**: Right-click menu shows current temperature details for all sensors
-- [ ] **TRAY-04**: Right-click menu provides Open Settings and Exit actions
+- [x] **TRAY-01**: Application displays peak temperature as an integer rendered on the system tray icon
+- [x] **TRAY-02**: Tray icon updates in real time on each poll cycle
+- [x] **TRAY-03**: Right-click menu shows current temperature details for all sensors
+- [x] **TRAY-04**: Right-click menu provides Open Settings and Exit actions
 
 ### Configuration
 
-- [ ] **CONF-01**: User can configure WhatsApp phone number in settings
-- [ ] **CONF-02**: User can configure CallMeBot API key in settings
-- [ ] **CONF-03**: User can configure alarm temperature threshold (°C) in settings
-- [ ] **CONF-04**: Settings persist to local config file and reload on restart
+- [x] **CONF-01**: User can configure WhatsApp phone number in settings
+- [x] **CONF-02**: User can configure CallMeBot API key in settings
+- [x] **CONF-03**: User can configure alarm temperature threshold (°C) in settings
+- [x] **CONF-04**: Settings persist to local config file and reload on restart
 
 ### Packaging & Deployment
 
@@ -72,14 +72,14 @@ Deferred to future release.
 | ALRT-03 | Phase 2 | Complete |
 | ALRT-04 | Phase 2 | Complete |
 | ALRT-05 | Phase 2 | Complete |
-| TRAY-01 | Phase 3 | Pending |
-| TRAY-02 | Phase 3 | Pending |
-| TRAY-03 | Phase 3 | Pending |
-| TRAY-04 | Phase 3 | Pending |
-| CONF-01 | Phase 3 | Pending |
-| CONF-02 | Phase 3 | Pending |
-| CONF-03 | Phase 3 | Pending |
-| CONF-04 | Phase 3 | Pending |
+| TRAY-01 | Phase 3 | Complete |
+| TRAY-02 | Phase 3 | Complete |
+| TRAY-03 | Phase 3 | Complete |
+| TRAY-04 | Phase 3 | Complete |
+| CONF-01 | Phase 3 | Complete |
+| CONF-02 | Phase 3 | Complete |
+| CONF-03 | Phase 3 | Complete |
+| CONF-04 | Phase 3 | Complete |
 | DEPL-01 | Phase 4 | Pending |
 | DEPL-02 | Phase 4 | Pending |
 | DEPL-03 | Phase 4 | Pending |
