@@ -1,0 +1,16 @@
+# CPU High Temperature Alert — Python dependencies
+# Target: Windows 10/11, Python 3.10+
+
+# Hardware telemetry via LibreHardwareMonitor .NET DLL
+pythonnet>=3.0.3,<4.0
+
+# System tray icon
+pystray>=0.19.5,<1.0
+Pillow>=10.0.0,<12.0
+
+# HTTP client for CallMeBot WhatsApp API
+requests>=2.31.0,<3.0
+
+# Dev / test (optional — install with: pip install -r requirements-dev.txt)
+# pytest>=8.0.0
+# pytest-mock>=3.12.0

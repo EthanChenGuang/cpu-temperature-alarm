@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "CPU High Temperature Alert — application configuration",
+
+  "whatsapp_phone": "+1234567890",
+  "callmebot_api_key": "YOUR_CALLMEBOT_API_KEY",
+
+  "threshold_celsius": 85,
+  "critical_tiers_celsius": [90, 95],
+  "cooldown_seconds": 180,
+
+  "poll_interval_seconds": 3,
+
+  "beep_frequency_hz": 1000,
+  "beep_duration_ms": 500,
+
+  "alert_message_template": "CPU/GPU ALERT: Peak temperature {peak_temp}°C exceeds threshold {threshold}°C on {hostname}."
+}

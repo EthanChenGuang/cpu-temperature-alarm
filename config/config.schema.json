@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cpu-temp-alert-config",
+  "title": "CPU High Temperature Alert Config",
+  "type": "object",
+  "required": ["threshold_celsius", "poll_interval_seconds"],
+  "properties": {
+    "whatsapp_phone": {
+      "type": "string",
+      "description": "E.164 phone number registered with CallMeBot (e.g. +1234567890)",
+      "pattern": "^\\+[1-9]\\d{6,14}$"
+    },
+    "callmebot_api_key": {
+      "type": "string",
+      "description": "CallMeBot API key from https://www.callmebot.com/blog/free-api-whatsapp-messages/",
+      "minLength": 1
+    },
+    "threshold_celsius": {
+      "type": "integer",
+      "description": "Base alarm temperature threshold in °C",
+      "default": 85,
+      "minimum": 40,
+      "maximum": 110
+    },
+    "critical_tiers_celsius": {
+      "type": "array",
+      "description": "Higher temperature tiers that bypass cooldown and trigger immediate re-alert",
+      "items": { "type": "integer", "minimum": 40, "maximum": 110 },
+      "default": [90, 95],
+      "minItems": 1
+    },
+    "cooldown_seconds": {
+      "type": "integer",
+      "description": "WhatsApp re-alert suppression window for same tier (seconds)",
+      "default": 180,
+      "minimum": 30,
+      "maximum": 3600
+    },
+    "poll_interval_seconds": {
+      "type": "integer",
+      "description": "Hardware temperature polling interval",
+      "default": 3,
+      "minimum": 1,
+      "maximum": 60
+    },
+    "beep_frequency_hz": {
+      "type": "integer",
+      "description": "Local alert beep frequency (Hz)",
+      "default": 1000,
+      "minimum": 200,
+      "maximum": 5000
+    },
+    "beep_duration_ms": {
+      "type": "integer",
+      "description": "Duration of each beep pulse (ms)",
+      "default": 500,
+      "minimum": 100,
+      "maximum": 2000
+    },
+    "alert_message_template": {
+      "type": "string",
+      "description": "WhatsApp message template. Placeholders: {peak_temp}, {threshold}, {hostname}, {tier}",
+      "default": "CPU/GPU ALERT: Peak temperature {peak_temp}°C exceeds threshold {threshold}°C on {hostname}."
+    }
+  },
+  "additionalProperties": false
+}
