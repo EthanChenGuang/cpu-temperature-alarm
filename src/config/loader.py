@@ -13,12 +13,10 @@ logger = logging.getLogger(__name__)
 __all__ = ["default_config_path", "load_config", "save_config"]
 
 
-def _repo_root() -> Path:
-    return Path(__file__).resolve().parents[2]
-
-
 def default_config_path() -> Path:
-    return _repo_root() / "config" / "config.json"
+    from src.paths import config_dir
+
+    return config_dir() / "config.json"
 
 
 def load_config(path: Path | str | None = None) -> AppConfig:

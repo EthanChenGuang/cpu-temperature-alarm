@@ -20,7 +20,9 @@ class LhmBackend(Protocol):
 
 
 def default_vendor_dir() -> Path:
-    return Path(__file__).resolve().parents[2] / "vendor" / "LibreHardwareMonitor"
+    from src.paths import vendor_dir
+
+    return vendor_dir()
 
 
 class LhmBridge(LhmBackend):

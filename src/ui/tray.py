@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import logging
-import sys
 import threading
 from dataclasses import dataclass, field
 from typing import Any, Callable, Protocol
@@ -11,12 +10,10 @@ from typing import Any, Callable, Protocol
 from PIL import Image
 
 from src.alerts.engine import AlertEngine, AlertState
-from src.alerts.sound import SoundBackend, WinsoundBackend
+from src.alerts.sound import SoundBackend
 from src.alerts.whatsapp import CallMeBotClient, WhatsAppClient
-from src.config.loader import load_config
 from src.config.schema import AppConfig
-from src.telemetry.exceptions import LhmDllNotFoundError
-from src.telemetry.lhm_wrapper import LhmBackend, LhmBridge, SensorReading
+from src.telemetry.lhm_wrapper import LhmBackend, SensorReading
 from src.telemetry.sensor_reader import TelemetryPoller
 from src.ui.icon_renderer import peak_display_text, render_peak_icon
 from src.ui.settings import show_settings_dialog
@@ -210,23 +207,10 @@ class TemperatureTrayApp:
 
 
 def main() -> None:
-    logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+    """Backward-compatible entry — delegates to production src.main."""
+    from src.main import main as production_main
 
-    config = load_config()
-    bridge = LhmBridge()
-    try:
-        bridge.open()
-    except LhmDllNotFoundError as exc:
-        print(str(exc))
-        sys.exit(1)
-
-    app = TemperatureTrayApp(
-        config,
-        bridge,
-        WinsoundBackend(),
-        CallMeBotClient(config.whatsapp_phone, config.callmebot_api_key),
-    )
-    app.run()
+    production_main()
 
 
 if __name__ == "__main__":
