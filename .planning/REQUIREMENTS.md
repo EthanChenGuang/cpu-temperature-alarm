@@ -7,9 +7,9 @@
 
 ### Telemetry
 
-- [ ] **TELE-01**: Application reads all CPU temperature sensors via LibreHardwareMonitor every 3 seconds
-- [ ] **TELE-02**: Application reads all GPU temperature sensors via LibreHardwareMonitor every 3 seconds
-- [ ] **TELE-03**: Application computes and exposes the maximum current temperature across all CPU and GPU sensors
+- [x] **TELE-01**: Application reads all CPU temperature sensors via LibreHardwareMonitor every 3 seconds
+- [x] **TELE-02**: Application reads all GPU temperature sensors via LibreHardwareMonitor every 3 seconds
+- [x] **TELE-03**: Application computes and exposes the maximum current temperature across all CPU and GPU sensors
 
 ### Alerting
 
@@ -64,9 +64,9 @@ Deferred to future release.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| TELE-01 | Phase 1 | Pending |
-| TELE-02 | Phase 1 | Pending |
-| TELE-03 | Phase 1 | Pending |
+| TELE-01 | Phase 1 | Complete |
+| TELE-02 | Phase 1 | Complete |
+| TELE-03 | Phase 1 | Complete |
 | ALRT-01 | Phase 2 | Pending |
 | ALRT-02 | Phase 2 | Pending |
 | ALRT-03 | Phase 2 | Pending |
@@ -85,6 +85,7 @@ Deferred to future release.
 | DEPL-03 | Phase 4 | Pending |
 
 **Coverage:**
+
 - v1 requirements: 18 total
 - Mapped to phases: 18
 - Unmapped: 0 ✓
