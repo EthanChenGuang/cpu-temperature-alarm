@@ -2,18 +2,18 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 04
-current_phase_name: Integration & Deployment
-status: complete
+status: Awaiting next milestone
 stopped_at: Completed 04-01-PLAN.md
-last_updated: "2026-08-16T20:26:13.897Z"
-last_activity: 2026-08-16
-last_activity_desc: Project initialized, planning artifacts created
+last_updated: "2026-08-19T08:12:33.790Z"
+last_activity: 2026-08-19
+last_activity_desc: Milestone v1.0 completed and archived
 progress:
   total_phases: 4
   completed_phases: 4
   total_plans: 4
   completed_plans: 4
+current_phase: 04
+current_phase_name: Integration & Deployment
 ---
 
 # Project State
@@ -23,16 +23,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-16)
 
 **Core value:** The user is reliably warned — audibly and via WhatsApp — before hardware damage occurs from sustained high CPU/GPU temperatures.
-**Current focus:** Phase 4 complete — all v1 requirements satisfied
+**Current focus:** Milestone v1.0 shipped — planning next milestone
 
 ## Current Position
 
-Phase: 04 of 4 (Integration & Deployment)
-Plan: 1 of 1 complete
-Status: Complete
-Last activity: 2026-08-16 — Phase 4 complete, all v1 requirements satisfied
-
-Progress: [██████████] 100%
+Phase: Milestone v1.0 complete
+Plan: —
+Status: Awaiting next milestone
+Last activity: 2026-08-19 — Milestone v1.0 completed and archived
 
 ## Performance Metrics
 
@@ -48,6 +46,8 @@ Progress: [██████████] 100%
 |-------|-------|-------|----------|
 | 1 | 1 | - | - |
 | 2 | 1 | - | - |
+| 4 | 1 | - | - |
+| 3 | 1 | - | - |
 **Per-Plan Metrics:**
 
 | Plan | Duration | Tasks | Files |
@@ -83,12 +83,22 @@ None yet.
 
 ## Deferred Items
 
+Items acknowledged at milestone close on 2026-08-19 (tech debt accepted):
+
 | Category | Item | Status | Deferred At |
 |----------|------|--------|-------------|
-| *(none)* | | | |
+| verification | Windows live LHM sensor poll | pending | 2026-08-19 |
+| verification | Winsound audible beep on Windows | pending | 2026-08-19 |
+| verification | CallMeBot live WhatsApp send | pending | 2026-08-19 |
+| verification | Live pystray icon + Tkinter settings on Windows | pending | 2026-08-19 |
+| verification | PyInstaller exe build + Task Scheduler autorun | pending | 2026-08-19 |
 
 ## Session Continuity
 
 Last session: 2026-08-16T20:26:13.886Z
 Stopped at: Completed 04-01-PLAN.md
 Resume file: None
+
+## Operator Next Steps
+
+- Start the next milestone with /gsd-new-milestone
