@@ -14,7 +14,7 @@ from src.alerts.whatsapp import MockWhatsAppClient
 from src.config.loader import load_config, save_config
 from src.config.schema import AppConfig, config_from_dict
 from src.telemetry.lhm_wrapper import SensorReading
-from src.ui.icon_renderer import peak_display_text, render_peak_icon
+from src.ui.icon_renderer import peak_display_text, render_app_icon, render_tray_icon
 from src.ui.settings import show_settings_dialog
 from src.ui.tray import MenuItemSpec, MockTrayController, TemperatureTrayApp
 
@@ -50,13 +50,26 @@ def test_peak_display_text_and_icon_render():
     assert peak_display_text(86.4) == "86"
     assert peak_display_text(None) == "--"
 
-    icon16 = render_peak_icon(72.0, size=16)
-    icon32 = render_peak_icon(72.0, size=32)
+    icon16 = render_tray_icon(72.0, size=16)
+    icon32 = render_tray_icon(72.0, size=32)
     assert icon16.size == (16, 16)
+    assert icon16.mode == "RGBA"
     assert icon32.size == (32, 32)
+    assert icon32.mode == "RGBA"
+    assert icon32.getpixel((0, 0))[3] == 0
 
-    unknown = render_peak_icon(None, size=16)
+    alert = render_tray_icon(90.0, size=32, alerting=True)
+    assert alert.mode == "RGBA"
+    assert alert.getpixel((0, 0))[3] == 0
+    assert alert.getpixel((16, 16))[3] > 0
+
+    unknown = render_tray_icon(None, size=16)
     assert unknown.size == (16, 16)
+
+    app_icon = render_app_icon(86.0, size=64, alerting=True)
+    assert app_icon.size == (64, 64)
+    assert app_icon.getpixel((0, 0))[3] == 0
+    assert app_icon.getpixel((32, 32))[3] > 0
 
 
 # --- Task 2 settings ---
@@ -68,6 +81,9 @@ class FakeWidget:
     fg: str = "black"
 
     def grid(self, **kwargs: Any) -> None:
+        return None
+
+    def grid_remove(self) -> None:
         return None
 
     def pack(self, **kwargs: Any) -> None:
@@ -96,6 +112,15 @@ class FakeEntry(FakeWidget):
         self.textvariable = textvariable
         self.show = kwargs.get("show")
         self.width = kwargs.get("width")
+        self._config: dict[str, Any] = {}
+
+    def config(self, **kwargs: Any) -> None:
+        self._config.update(kwargs)
+        if "show" in kwargs:
+            self.show = kwargs["show"]
+
+    def pack(self, **kwargs: Any) -> None:
+        return None
 
 
 class FakeButton(FakeWidget):
@@ -133,12 +158,21 @@ class FakeRoot:
         self.destroyed = True
 
 
+class FakeCheckbutton(FakeWidget):
+    def __init__(self, master: Any, text: str, variable: Any, command: Any = None, **kwargs: Any) -> None:
+        self.text = text
+        self.variable = variable
+        self.command = command
+
+
 class FakeTkModule:
     StringVar = FakeStringVar
+    BooleanVar = FakeStringVar
     Frame = FakeFrame
     Label = FakeLabel
     Entry = FakeEntry
     Button = FakeButton
+    Checkbutton = FakeCheckbutton
 
     def __init__(self) -> None:
         self.last_root: FakeRoot | None = None
@@ -167,6 +201,8 @@ def test_settings_save_persists_config(tmp_path: Path):
             config,
             tk_module=fake_tk,
             config_path=config_path,
+            autostart_is_enabled=lambda: False,
+            autostart_set_enabled=lambda _enabled: (True, "ok"),
         )
 
     run_dialog_and_save()
@@ -209,11 +245,11 @@ def test_tray_poll_updates_icon_and_menu():
     app._handle_poll(readings, 72.0)
 
     assert len(tray.images) == 1
-    assert tray.titles[-1] == "Peak: 72°C"
+    assert tray.titles[-1] == "Peak: 72.0°C"
     assert len(tray.menus) == 1
     labels = [item.label for item in tray.menus[0] if not item.separator]
-    assert "CPU Package: 72°C" in labels
-    assert "GPU Hot Spot: 68°C" in labels
+    assert "CPU Package: 72.0°C" in labels
+    assert "GPU Hot Spot: 68.0°C" in labels
     assert "Open Settings" in labels
     assert "Exit" in labels
 
@@ -228,9 +264,16 @@ def test_tray_exit_stops_beep():
     app._handle_poll([], 86.0)
     assert sound.is_beeping
 
-    app._exit()
+    class FakeIcon:
+        stopped = False
+
+        def stop(self) -> None:
+            self.stopped = True
+
+    icon = FakeIcon()
+    app._exit(icon, None)
     assert not sound.is_beeping
-    assert tray.stopped
+    assert icon.stopped
 
 
 def test_tray_alerting_tint_on_high_peak():
@@ -255,6 +298,44 @@ def test_tray_settings_reload():
     updated = _make_config(threshold_celsius=92)
     app._apply_config(updated)
     assert app.config.threshold_celsius == 92
+
+
+def test_tray_menu_includes_mute_action():
+    backend = FakeBackend([SensorReading("CPU", 72.0)])
+    sound = MockSoundBackend()
+    whatsapp = MockWhatsAppClient()
+    tray = MockTrayController()
+    app = TemperatureTrayApp(_make_config(), backend, sound, whatsapp, tray_controller=tray)
+
+    app._handle_poll([SensorReading("CPU", 72.0)], 72.0)
+    labels = [item.label for item in tray.menus[0] if not item.separator]
+    assert "Mute sound 15 min" in labels
+
+    mute_item = next(item for item in tray.menus[0] if item.label == "Mute sound 15 min")
+    assert mute_item.action is not None
+    mute_item.action(None, None)
+    assert app._engine.is_muted
+    assert not sound.is_beeping
+
+
+def test_tray_menu_hides_mute_when_sound_alerts_disabled():
+    backend = FakeBackend([SensorReading("CPU", 72.0)])
+    sound = MockSoundBackend()
+    whatsapp = MockWhatsAppClient()
+    tray = MockTrayController()
+    app = TemperatureTrayApp(
+        _make_config(sound_alerts_enabled=False),
+        backend,
+        sound,
+        whatsapp,
+        tray_controller=tray,
+    )
+
+    app._handle_poll([SensorReading("CPU", 72.0)], 72.0)
+    labels = [item.label for item in tray.menus[0] if not item.separator]
+    assert "Mute sound 15 min" not in labels
+    assert "Sound muted (15 min)" not in labels
+    assert "Open Settings" in labels
 
 
 def test_menu_item_spec_separator():

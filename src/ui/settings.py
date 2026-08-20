@@ -64,6 +64,7 @@ def show_settings_dialog(
         whatsapp_toggle_frame,
         text="WhatsApp message",
         variable=whatsapp_alerts_var,
+        command=lambda: _sync_whatsapp_fields(),
     ).pack(side="left")
     tk_module.Label(
         whatsapp_toggle_frame,
@@ -71,18 +72,28 @@ def show_settings_dialog(
         fg="gray",
     ).pack(side="left", padx=(8, 0))
 
-    tk_module.Label(frame, text="WhatsApp phone (E.164):").grid(row=row, column=0, sticky="w")
-    row += 1
-    tk_module.Entry(frame, textvariable=phone_var, width=32).grid(
-        row=row, column=0, columnspan=2, sticky="ew", pady=(0, 8)
-    )
+    whatsapp_fields_frame = tk_module.Frame(frame)
+    whatsapp_fields_frame.grid(row=row, column=0, columnspan=2, sticky="ew")
     row += 1
 
-    tk_module.Label(frame, text="CallMeBot API key:").grid(row=row, column=0, sticky="w")
-    row += 1
-    api_row = tk_module.Frame(frame)
-    api_row.grid(row=row, column=0, columnspan=2, sticky="ew", pady=(0, 8))
-    row += 1
+    def _sync_whatsapp_fields() -> None:
+        if whatsapp_alerts_var.get():
+            whatsapp_fields_frame.grid()
+        else:
+            whatsapp_fields_frame.grid_remove()
+
+    tk_module.Label(whatsapp_fields_frame, text="WhatsApp phone (E.164):").grid(
+        row=0, column=0, sticky="w"
+    )
+    tk_module.Entry(whatsapp_fields_frame, textvariable=phone_var, width=32).grid(
+        row=1, column=0, columnspan=2, sticky="ew", pady=(0, 8)
+    )
+
+    tk_module.Label(whatsapp_fields_frame, text="CallMeBot API key:").grid(
+        row=2, column=0, sticky="w"
+    )
+    api_row = tk_module.Frame(whatsapp_fields_frame)
+    api_row.grid(row=3, column=0, columnspan=2, sticky="ew", pady=(0, 8))
 
     api_key_visible = {"value": False}
 
@@ -119,7 +130,7 @@ def show_settings_dialog(
     ).pack(side="left")
     tk_module.Label(
         sound_frame,
-        text="(off = mute beeps; WhatsApp alerts unchanged)",
+        text="(off = mute beeps; independent of WhatsApp)",
         fg="gray",
     ).pack(side="left", padx=(8, 0))
 
@@ -229,6 +240,8 @@ def show_settings_dialog(
         side="left", padx=(0, 8)
     )
     tk_module.Button(button_frame, text="Cancel", command=_cancel, width=10).pack(side="left")
+
+    _sync_whatsapp_fields()
 
     root.protocol("WM_DELETE_WINDOW", _cancel)
     root.mainloop()

@@ -9,10 +9,18 @@
   "critical_tiers_celsius": [90, 95],
   "cooldown_seconds": 180,
 
-  "poll_interval_seconds": 3,
+  "poll_interval_seconds": 1,
 
   "beep_frequency_hz": 1000,
   "beep_duration_ms": 500,
+  "beep_burst_count": 2,
+  "beep_burst_gap_ms": 200,
+  "beep_interval_seconds": 10,
+  "critical_beep_burst_count": 3,
+  "critical_beep_interval_seconds": 30,
+  "mute_duration_seconds": 900,
+  "sound_alerts_enabled": true,
+  "whatsapp_alerts_enabled": true,
 
-  "alert_message_template": "CPU/GPU ALERT: Peak temperature {peak_temp}°C exceeds threshold {threshold}°C on {hostname}."
+  "alert_message_template": "CPU/GPU ALERT: Peak temperature {peak_temp}°C exceeds threshold {threshold}°C on {hostname}. [{timestamp}]"
 }
