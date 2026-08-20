@@ -4,9 +4,9 @@ milestone: v1.0
 milestone_name: milestone
 status: Awaiting next milestone
 stopped_at: Completed 04-01-PLAN.md
-last_updated: "2026-08-19T08:12:33.790Z"
-last_activity: 2026-08-19
-last_activity_desc: Milestone v1.0 completed and archived
+last_updated: "2026-08-20T20:23:15Z"
+last_activity: 2026-08-20
+last_activity_desc: Completed quick task 260820-uu1 WhatsApp message idle toggle
 progress:
   total_phases: 4
   completed_phases: 4
@@ -30,7 +30,7 @@ See: .planning/PROJECT.md (updated 2026-08-16)
 Phase: Milestone v1.0 complete
 Plan: —
 Status: Awaiting next milestone
-Last activity: 2026-08-19 — Milestone v1.0 completed and archived
+Last activity: 2026-08-20 - Completed quick task 260820-uu1: 现在我想加一个 WhatsApp message 的开关。只有当这个开关打开时，才显示 WhatsApp 的电话号码和 Call me bot API key。如果开关关上的时候，这两个就被临时设为 idle。
 
 ## Performance Metrics
 
@@ -71,6 +71,7 @@ Last activity: 2026-08-19 — Milestone v1.0 completed and archived
 - [Phase ?]: API key masked in settings; empty save preserves existing key
 - [Phase ?]: One-folder COLLECT PyInstaller build for reliable LHM/pythonnet DLL loading
 - [Phase ?]: src/paths.py app_root resolves beside frozen exe for vendor and config
+- [Quick 260820-uu1]: WhatsApp idle is config/engine flag default True; hide credentials with grid_remove; do not wipe CallMeBot keys
 
 ### Pending Todos
 
@@ -80,6 +81,12 @@ None yet.
 
 - Development on WSL2; Windows machine required for LHM/pythonnet/winsound integration testing
 - CallMeBot API key must be obtained by user before WhatsApp alerts can be tested
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260820-uu1 | 现在我想加一个 WhatsApp message 的开关。只有当这个开关打开时，才显示 WhatsApp 的电话号码和 Call me bot API key。如果开关关上的时候，这两个就被临时设为 idle。 | 2026-08-20 | 1d8f1fe | [260820-uu1-whatsapp-message-whatsapp-call-me-bot-ap](./quick/260820-uu1-whatsapp-message-whatsapp-call-me-bot-ap/) |
 
 ## Deferred Items
 
@@ -95,8 +102,8 @@ Items acknowledged at milestone close on 2026-08-19 (tech debt accepted):
 
 ## Session Continuity
 
-Last session: 2026-08-16T20:26:13.886Z
-Stopped at: Completed 04-01-PLAN.md
+Last session: 2026-08-20T20:23:15Z
+Stopped at: Completed 260820-uu1-PLAN.md
 Resume file: None
 
 ## Operator Next Steps
