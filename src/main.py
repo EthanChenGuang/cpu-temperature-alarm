@@ -141,7 +141,11 @@ def main() -> None:
         from src.ui.alert_toast import show_temperature_alert_toast
 
         config = load_config()
-        show_temperature_alert_toast(99.9, config.threshold_celsius)
+        show_temperature_alert_toast(
+            99.9,
+            config.threshold_celsius,
+            critical_tiers=config.critical_tiers_celsius,
+        )
         __import__("time").sleep(6)
         raise SystemExit(0)
 

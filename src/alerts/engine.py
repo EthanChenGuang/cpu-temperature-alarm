@@ -110,7 +110,11 @@ class AlertEngine:
                 self._config.sound_alerts_enabled,
                 self.is_muted,
             )
-            show_temperature_alert_toast(peak_temp, threshold)
+            show_temperature_alert_toast(
+                peak_temp,
+                threshold,
+                critical_tiers=self._config.critical_tiers_celsius,
+            )
 
         if self._config.sound_alerts_enabled and not self.is_muted:
             pattern = self._beep_pattern_for_tier(current_tier)
