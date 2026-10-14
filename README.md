@@ -48,7 +48,28 @@ Tray icon shows peak temperature; right-click for sensor details, Settings, and 
 
 ### Admin elevation
 
-Admin elevation may improve GPU and driver sensor access on some systems. Autostart (below) registers with highest available privileges for better sensor coverage.
+**Administrator privileges are required for CPU temperature sensors.** Intel CPU readings use low-level MSR access via LibreHardwareMonitor's kernel driver; GPU sensors usually work without admin. The packaged `.exe` requests admin automatically (`uac_admin`); accept the UAC prompt when starting the app.
+
+Do **not** run the official LibreHardwareMonitor GUI at the same time — both apps compete for the same CPU MSR driver and temperatures may disagree. Close LibreHardwareMonitor.exe before using this app for monitoring.
+
+Autostart (below) registers with highest available privileges for full sensor coverage.
+
+---
+
+## One-Command Install (Recommended)
+
+Builds a **single `.exe`**, installs it under `%LOCALAPPDATA%\Programs\cpu-temp-alert\`, creates a **desktop shortcut** (Run as administrator), and registers **logon autostart** with administrator privileges.
+
+```powershell
+# Run PowerShell as Administrator
+pwsh scripts/install.ps1
+```
+
+Edit WhatsApp credentials after install:
+
+```powershell
+notepad "$env:LOCALAPPDATA\Programs\cpu-temp-alert\config\config.json"
+```
 
 ---
 
@@ -60,21 +81,67 @@ The packaged executable does **not** require Python on the target machine. **.NE
 pwsh scripts/build.ps1
 ```
 
-Output: `dist/cpu-temp-alert/cpu-temp-alert.exe` (one-folder build with bundled LHM DLLs).
+Output: `dist/cpu-temp-alert.exe` (single-file build with bundled LHM DLLs).
+
+One-folder fallback if single-file DLL loading fails on your machine:
+
+```powershell
+pwsh scripts/build.ps1 -OneFolder
+```
 
 After building, copy config beside the executable:
 
 ```powershell
-mkdir dist/cpu-temp-alert/config -Force
-Copy-Item config/config.example.json dist/cpu-temp-alert/config/config.json
-notepad dist/cpu-temp-alert/config/config.json
+$Dir = Split-Path dist/cpu-temp-alert.exe
+mkdir "$Dir/config" -Force
+Copy-Item config/config.example.json "$Dir/config/config.json"
+notepad "$Dir/config/config.json"
 ```
 
 Run directly:
 
 ```powershell
-.\dist\cpu-temp-alert\cpu-temp-alert.exe
+.\dist\cpu-temp-alert.exe
 ```
+
+---
+
+## Windows Installer (Recommended for end users)
+
+Build a setup wizard that installs the app, default config, user guide, desktop shortcut, and optional logon autostart.
+
+**Prerequisite:** [Inno Setup 6](https://jrsoftware.org/isinfo.php) (`ISCC.exe` on PATH or default install location).
+
+```powershell
+pwsh scripts/build-installer.ps1
+```
+
+Output: `dist/cpu-temp-alert-setup-6.17.0.exe`
+
+On the target PC, double-click the setup file. Default install location:
+
+```text
+%LOCALAPPDATA%\Programs\cpu-temp-alert\
+├── cpu-temp-alert.exe
+├── config\
+│   ├── config.example.json
+│   └── config.json          ← created on first install; preserved on upgrade
+└── 安装与使用说明.md
+```
+
+After install, edit WhatsApp credentials:
+
+```powershell
+notepad "$env:LOCALAPPDATA\Programs\cpu-temp-alert\config\config.json"
+```
+
+The installer offers:
+
+- Desktop shortcut (Run as administrator)
+- Start with Windows at logon (`--logon-delay 30`, Startup folder shortcut)
+- Launch after installation
+
+Uninstall via **Settings → Apps** or the Start Menu uninstall entry.
 
 ---
 
@@ -82,11 +149,17 @@ Run directly:
 
 Install a scheduled task that starts the app silently at user logon with highest available privileges (no UAC prompt on each reboot after initial admin install):
 
-**Packaged exe (recommended):**
+**Full install (exe + desktop shortcut + autostart):**
+
+```powershell
+pwsh scripts/install.ps1
+```
+
+**Autostart only** (after `install.ps1` or manual build):
 
 ```powershell
 # Run PowerShell as Administrator
-pwsh scripts/install-autostart.ps1
+pwsh scripts/install-autostart.ps1 -RunAsAdmin
 ```
 
 **Development mode** (uses `pythonw -m src.main` from repo):
@@ -167,6 +240,7 @@ src/alerts/              Threshold engine, beep, WhatsApp
 src/config/              config.json loader/schema
 cpu-temp-alert.spec      PyInstaller spec
 scripts/build.ps1        One-command Windows build
+scripts/install.ps1      Build + desktop shortcut + admin autostart
 scripts/install-autostart.ps1  Task Scheduler setup
 scripts/fetch-lhm.ps1    Download LHM DLL bundle
 config/config.example.json   Example configuration (copy to config.json)

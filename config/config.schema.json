@@ -39,7 +39,7 @@
     "poll_interval_seconds": {
       "type": "integer",
       "description": "Hardware temperature polling interval",
-      "default": 3,
+      "default": 1,
       "minimum": 1,
       "maximum": 60
     },
@@ -59,8 +59,8 @@
     },
     "alert_message_template": {
       "type": "string",
-      "description": "WhatsApp message template. Placeholders: {peak_temp}, {threshold}, {hostname}, {tier}",
-      "default": "CPU/GPU ALERT: Peak temperature {peak_temp}°C exceeds threshold {threshold}°C on {hostname}."
+      "description": "WhatsApp message template. Placeholders: {peak_temp}, {threshold}, {hostname}, {tier}, {timestamp}",
+      "default": "CPU/GPU ALERT: Peak temperature {peak_temp}°C exceeds threshold {threshold}°C on {hostname}. [{timestamp}]"
     }
   },
   "additionalProperties": false

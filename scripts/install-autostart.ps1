@@ -4,6 +4,7 @@
 param(
     [string]$ExePath = "",
     [switch]$DevMode,
+    [switch]$RunAsAdmin,
     [string]$TaskName = "CpuTempAlert"
 )
 
@@ -22,7 +23,7 @@ if (-not (Test-Administrator)) {
 $RepoRoot = Split-Path -Parent $PSScriptRoot
 
 if ($DevMode) {
-    $VenvPythonw = Join-Path $RepoRoot ".venv" "Scripts" "pythonw.exe"
+    $VenvPythonw = Join-Path (Join-Path (Join-Path $RepoRoot ".venv") "Scripts") "pythonw.exe"
     if (Test-Path $VenvPythonw) {
         $Target = $VenvPythonw
         $Arguments = "-m src.main"
@@ -33,7 +34,16 @@ if ($DevMode) {
     $WorkingDir = $RepoRoot
 } else {
     if (-not $ExePath) {
-        $ExePath = Join-Path $RepoRoot "dist" "cpu-temp-alert" "cpu-temp-alert.exe"
+        $OneFileExe = Join-Path (Join-Path $RepoRoot "dist") "cpu-temp-alert.exe"
+        $OneFolderExe = Join-Path (Join-Path (Join-Path $RepoRoot "dist") "cpu-temp-alert") "cpu-temp-alert.exe"
+        $InstalledExe = Join-Path (Join-Path $env:LOCALAPPDATA "Programs\cpu-temp-alert") "cpu-temp-alert.exe"
+        if (Test-Path $InstalledExe) {
+            $ExePath = $InstalledExe
+        } elseif (Test-Path $OneFileExe) {
+            $ExePath = $OneFileExe
+        } else {
+            $ExePath = $OneFolderExe
+        }
     }
     if (-not (Test-Path $ExePath)) {
         throw "Executable not found at $ExePath. Run scripts/build.ps1 first or pass -ExePath."
@@ -57,7 +67,10 @@ $Settings = New-ScheduledTaskSettingsSet `
     -StartWhenAvailable `
     -ExecutionTimeLimit ([TimeSpan]::Zero)
 
-$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType Interactive -RunLevel Highest
+# Limited keeps the tray icon in the normal notification area. Highest (admin)
+# hides icons in a separate elevated overflow that most users never see.
+$RunLevel = if ($RunAsAdmin) { "Highest" } else { "Limited" }
+$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType Interactive -RunLevel $RunLevel
 
 Register-ScheduledTask `
     -TaskName $TaskName `
@@ -71,7 +84,10 @@ Write-Host "Registered scheduled task '$TaskName'"
 Write-Host "  Target:      $Target"
 if ($Arguments) { Write-Host "  Arguments:   $Arguments" }
 Write-Host "  Working dir: $WorkingDir"
-Write-Host "  Run level:   Highest (admin-equivalent at logon)"
+Write-Host "  Run level:   $RunLevel"
+if (-not $RunAsAdmin) {
+    Write-Host "  Tip: pass -RunAsAdmin only if sensors require elevation (tray icon may hide in overflow)."
+}
 Write-Host ""
 Write-Host "Verify: Get-ScheduledTask -TaskName '$TaskName' | Format-List"
 Write-Host "Remove: Unregister-ScheduledTask -TaskName '$TaskName' -Confirm:`$false"

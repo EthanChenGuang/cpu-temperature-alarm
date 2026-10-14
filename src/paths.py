@@ -16,7 +16,20 @@ def app_root() -> Path:
 
 
 def vendor_dir() -> Path:
-    return app_root() / "vendor" / "LibreHardwareMonitor"
+    root = app_root()
+    candidates: list[Path] = []
+    if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
+        candidates.append(Path(sys._MEIPASS) / "vendor" / "LibreHardwareMonitor")
+    candidates.extend(
+        (
+            root / "vendor" / "LibreHardwareMonitor",
+            root / "_internal" / "vendor" / "LibreHardwareMonitor",
+        )
+    )
+    for path in candidates:
+        if path.is_dir():
+            return path
+    return candidates[0]
 
 
 def config_dir() -> Path:

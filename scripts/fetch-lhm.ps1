@@ -5,7 +5,7 @@ $ErrorActionPreference = "Stop"
 $Version = "0.9.6"
 $ZipUrl = "https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/releases/download/v$Version/LibreHardwareMonitor.zip"
 $RepoRoot = Split-Path -Parent $PSScriptRoot
-$Dest = Join-Path $RepoRoot "vendor" "LibreHardwareMonitor"
+$Dest = Join-Path (Join-Path $RepoRoot "vendor") "LibreHardwareMonitor"
 
 New-Item -ItemType Directory -Force -Path $Dest | Out-Null
 

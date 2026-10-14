@@ -2,11 +2,15 @@
 
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Protocol
 
 from src.telemetry.exceptions import LhmDllNotFoundError, LhmRuntimeError
+from src.telemetry.sensors import is_absolute_temperature_sensor
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -67,6 +71,7 @@ class LhmBridge(LhmBackend):
             computer.IsStorageEnabled = False
             computer.Open()
             self._computer = computer
+            self._log_cpu_access_status()
         except LhmDllNotFoundError:
             raise
         except Exception as exc:
@@ -74,6 +79,27 @@ class LhmBridge(LhmBackend):
                 "Failed to load LibreHardwareMonitor. "
                 "Ensure .NET Framework 4.7.2 or later is installed."
             ) from exc
+
+    def _log_cpu_access_status(self) -> None:
+        readings = self.read_temperatures()
+        cpu_readings = [reading for reading in readings if reading.name.startswith("CPU")]
+        if cpu_readings:
+            logger.info("CPU temperature sensors available (%s readings)", len(cpu_readings))
+            return
+
+        from src.platform.windows import is_admin
+
+        if not is_admin():
+            logger.warning(
+                "CPU temperatures unavailable without administrator privileges — "
+                "LibreHardwareMonitor needs admin to read Intel MSR sensors. "
+                "Restart the app as Administrator."
+            )
+            return
+
+        logger.warning(
+            "CPU hardware detected but LibreHardwareMonitor returned no CPU temperature values."
+        )
 
     def _update_hardware(self, hardware) -> None:
         hardware.Update()
@@ -117,6 +143,8 @@ class LhmBridge(LhmBackend):
             prefix = self._hardware_prefix(hardware.HardwareType)
             for sensor in hardware.Sensors:
                 if sensor.SensorType != self._sensor_type.Temperature:
+                    continue
+                if not is_absolute_temperature_sensor(sensor.Name):
                     continue
                 value = sensor.Value
                 if value is None:
